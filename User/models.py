@@ -1,0 +1,26 @@
+from django.contrib.auth.models import AbstractUser
+from django.db import models
+from django.utils import timezone
+from User.managers import UserManager
+from . import constants as user_constants
+
+
+class User(AbstractUser):
+    
+    username = None
+    name = models.CharField(max_length=50)
+    address = models.CharField(max_length=50)
+    codemeli = models.CharField(max_length=50, unique=True)
+    telephon = models.CharField(max_length=50)
+    noe_tadris = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
+    date_joined = models.DateTimeField(default=timezone.now)
+    user_type = models.PositiveSmallIntegerField(
+        choices=user_constants.USER_TYPE_CHOICES
+    )
+
+    REQUIRED_FIELDS = ["name","address","telephon","user_type"]
+    USERNAME_FIELD = "codemeli"
+
+    objects = UserManager()

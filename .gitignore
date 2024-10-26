@@ -1,0 +1,50 @@
+# فایل‌های Python
+*.pyc
+__pycache__/
+
+# محیط مجازی (مثلاً venv یا env)
+env/
+venv/
+ENV/
+.venv/
+.env/
+
+# فایل‌های محیطی
+*.env
+.env.*
+
+# فایل‌های پایگاه داده
+*.sqlite3
+db.sqlite3
+
+# فایل‌های migration
+*/migrations/*.py
+*/migrations/*.pyc
+
+# فایل‌های static و media
+/static/
+/media/
+
+# فایل‌های log
+*.log
+
+# فایل‌های Django
+*.pot
+*.mo
+
+# فایل‌های سیستم
+.DS_Store
+Thumbs.db
+
+# فایل‌های VSCode و PyCharm
+.vscode/
+.idea/
+
+# فایل‌های requirements
+*.bak
+*.tmp
+
+# پوشه‌های cache
+__pycache__/
+.cache/
+.tox/
