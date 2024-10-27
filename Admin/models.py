@@ -8,7 +8,7 @@ class Class(models.Model):
     class_number = models.PositiveIntegerField(default=1)
     class_time = models.CharField(max_length=10)
     class_created = models.DateTimeField(default=timezone.now)
-    user_type = models.ForeignKey("User.User", on_delete=models.CASCADE)
+    morabi = models.ForeignKey("User.User", on_delete=models.CASCADE)
     
     def __str__(self):
         return self.class_number
