@@ -11,7 +11,7 @@ class User(AbstractUser):
     name = models.CharField(max_length=50)
     address = models.CharField(max_length=50)
     codemeli = models.CharField(max_length=50, unique=True)
-    telephon = models.CharField(max_length=50)
+    telephone = models.CharField(max_length=50)
     noe_tadris = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
@@ -20,7 +20,7 @@ class User(AbstractUser):
         choices=user_constants.USER_TYPE_CHOICES
     )
 
-    REQUIRED_FIELDS = ["name","address","telephon","user_type"]
+    REQUIRED_FIELDS = ["name","address","telephone","user_type"]
     USERNAME_FIELD = "codemeli"
 
     objects = UserManager()
