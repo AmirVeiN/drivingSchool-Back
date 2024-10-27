@@ -13,5 +13,5 @@ class Class(models.Model):
 
     
     def __str__(self):
-        return self.class_number
+        return {f'{self.class_number}, {self.morabi}'}
     
