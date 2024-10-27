@@ -1,3 +1,15 @@
 from django.db import models
+from django.utils import timezone
 
-# Create your models here.
+
+class Class(models.Model):
+    
+    address = models.CharField(max_length=50)
+    class_number = models.PositiveIntegerField(default=1)
+    class_time = models.CharField(max_length=10)
+    class_created = models.DateTimeField(default=timezone.now)
+    user_type = models.ForeignKey("User.User", on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return self.class_number
+    

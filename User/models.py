@@ -25,3 +25,7 @@ class User(AbstractUser):
     USERNAME_FIELD = "codemeli"
 
     objects = UserManager()
+    
+    def __str__(self):
+        return self.name
+    
