@@ -10,7 +10,7 @@ class Class(models.Model):
     class_created = models.DateTimeField(default=timezone.now)
     morabi = models.ForeignKey("User.User", on_delete=models.CASCADE)
     noe_tadris = models.BooleanField(default=False)
-
+    people = models.ManyToManyField("User.User", related_name="classes")
     
     def __str__(self):
         return f'{self.class_number}, {self.morabi}'

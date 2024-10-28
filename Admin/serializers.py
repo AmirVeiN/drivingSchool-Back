@@ -12,7 +12,8 @@ class ClassSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Class
-        fields = ['id', 'address', 'class_number', 'class_time', 'class_created', 'morabi', 'morabi_name', 'noe_tadris']
+        fields = ['id', 'address', 'class_number', 'class_time', 'class_created','morabi', 'morabi_name', 'noe_tadris']
         extra_kwargs = {
-            'morabi': {'write_only': True}
+            'morabi': {'write_only': True},
+            'people' : {'write_only': True}
         }

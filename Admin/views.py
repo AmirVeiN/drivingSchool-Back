@@ -21,6 +21,12 @@ class CreateUser(APIView):
             serializer.save()
             return Response({"message": "User created successfully"}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class UsersView(APIView):
+    def get(self, request):
+        users = User.objects.filter(user_type=2)
+        serializer = UserSerializer(users, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
 class GetMorabi(APIView):
     def get(self, request):
@@ -40,3 +46,49 @@ class ClassView(APIView):
             serializer.save()
             return Response({"message": "Class created successfully"}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self, request):
+        class_id = request.data.get("id")
+        
+        if not class_id:
+            return Response({"error": "Class ID not provided"}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            class_instance = Class.objects.get(id=class_id)
+            class_instance.delete()
+            return Response({"message": "Class deleted successfully"}, status=status.HTTP_202_ACCEPTED)
+        
+        except Class.DoesNotExist:
+            return Response({"error": "Class not found"}, status=status.HTTP_404_NOT_FOUND)
+        
+class ClassUserView(APIView):
+    def get(self, request, class_id):
+        try:
+            class_instance = Class.objects.get(id=class_id)
+            users = class_instance.people.all()
+            users_data = [{"id": user.id, "name": user.name} for user in users]
+            return Response(users_data, status=status.HTTP_200_OK)
+        except Class.DoesNotExist:
+            return Response({"error": "Class not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    def post(self, request, class_id):
+        user_id = request.data.get("userId")
+        try:
+            class_instance = Class.objects.get(id=class_id)
+            user = User.objects.get(id=user_id)
+            class_instance.people.add(user)
+            return Response({"message": "User Added to class successfully"}, status=status.HTTP_201_CREATED)
+        except Class.DoesNotExist:
+            return Response({"error": "Class not found"}, status=status.HTTP_404_NOT_FOUND)
+        except User.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    def delete(self, request, class_id, user_id):
+        try:
+            class_instance = Class.objects.get(id=class_id)
+            user = User.objects.get(id=user_id)
+            class_instance.people.remove(user)
+            return Response({"message": "User removed from class"}, status=status.HTTP_202_ACCEPTED)
+        except Class.DoesNotExist:
+            return Response({"error": "Class not found"}, status=status.HTTP_404_NOT_FOUND)
+        except User.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
