@@ -4,6 +4,7 @@ from . import views
 urlpatterns = [
     path("login/", views.AdminLoginView.as_view()),
     path("create/", views.CreateUser.as_view()),
+    path('delete/<int:user_id>/', views.CreateUser.as_view(), name='delete_user'),
     path("users/", views.UsersView.as_view()),
     path("morabi/", views.GetMorabi.as_view()),
     path("morabi/", views.GetMorabi.as_view()),
