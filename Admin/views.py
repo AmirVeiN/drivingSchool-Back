@@ -33,7 +33,7 @@ class CreateUser(APIView):
 
 class UsersView(APIView):
     def get(self, request):
-        users = User.objects.filter(user_type=2)
+        users = User.objects.exclude(user_type=3)
         serializer = UserSerializer(users, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
