@@ -4,13 +4,33 @@ from rest_framework import status
 from .models import Class
 from .serializers import ClassSerializer, UserSerializer
 from User.models import User
+from django.contrib.auth import authenticate, login
+from User.constants import ADMIN, MORABI
+
 class AdminLoginView(APIView):
     def post(self, request):
         username = request.data.get('username')
         password = request.data.get('password')
 
-        if username == 'admin' and password == 'admin':
-            return Response({"message": "Login successful"}, status=status.HTTP_200_OK)
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            if not user.is_active:
+                 return Response({"error": "User is inactive"}, status=status.HTTP_401_UNAUTHORIZED)
+            
+            # بررسی اینکه کاربر مربی یا ادمین باشد
+            if user.user_type not in [MORABI, ADMIN]:
+                return Response({"error": "Access denied. Only instructors and admins can login."}, status=status.HTTP_403_FORBIDDEN)
+            
+            login(request, user)
+            return Response({
+                "message": "Login successful",
+                "user": {
+                    "name": user.name,
+                    "type": user.user_type,
+                    "id": user.id
+                }
+            }, status=status.HTTP_200_OK)
         else:
             return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
         
